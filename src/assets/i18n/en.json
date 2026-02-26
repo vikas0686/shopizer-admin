@@ -489,7 +489,12 @@
     "DEFAULT_LANGUAGE": "Default language",
     "SELECT_LANGUAGE": "Select Language",
     "GROUPS": "Groups",
-    "DETAILS": "Customer details"
+    "DETAILS": "Customer details",
+    "SEARCH_NAME": "Search by name",
+    "SEARCH_EMAIL": "Search by email",
+    "SEARCH_CITY": "Search by city",
+    "SEARCH_PHONE": "Search by phone",
+    "SEARCH_COMPANY": "Search by company"
   },
   "NOT_FOUND": {
     "PAGE_NOT_FOUND": "Page Not Found",
@@ -553,6 +558,8 @@
     "HEIGHT": "Height",
     "WIDTH": "Width",
     "LENGTH": "Length",
+    "CITY": "City",
+    "PHONE": "Phone",
     "CREATION_DATE": "Creation date",
     "UNSAVED_DATA": "You have unsaved data. Are you sure you want to leave this page?",
     "DRAG_DROP": "Drag and drop file here",

@@ -1,27 +1,116 @@
 <nb-card class="page-card inner_pages">
-  <nb-card-body [nbSpinner]="loadingList" nbSpinnerSize="large" nbSpinnerStatus="primary" class="customerList">
+  <nb-card-body [nbSpinner]="loadingList" nbSpinnerSize="large" nbSpinnerStatus="primary" class="customerList" (click)="closeDropdown($event)">
     <div class="inner_pages_legacy">
       <nb-card-header class="main_header">
         <h1 class="page_title">{{ 'CUSTOMERS.CUSTOMER_LIST' | translate}}</h1>
         <div class="content_spacing_empty"></div>
-
       </nb-card-header>
 
-      <form class="form-inline filter_section">
-        <div class="filter_left_section">
+      <div class="modern-filter-section">
+        <!-- Advanced Search Bar -->
+        <div class="advanced-search-container">
+          <div class="search-bar-wrapper">
+            <div class="search-tags">
+              <span *ngFor="let tag of searchTags" class="search-tag">
+                <strong>{{tag.label}}:</strong> {{tag.value}}
+                <span class="close-icon" (click)="removeSearchTag(tag.field)">×</span>
+              </span>
+              <button class="add-filter-btn" (click)="toggleFilterDropdown()">
+                + Add Filter
+              </button>
+            </div>
+            
+            <!-- Filter Dropdown -->
+            <div class="filter-dropdown" *ngIf="showFilterDropdown">
+              <div class="filter-option">
+                <label>Name</label>
+                <div class="filter-input-group">
+                  <input type="text" 
+                         [(ngModel)]="searchValue" 
+                         placeholder="Enter name"
+                         class="filter-input"
+                         (keyup.enter)="addSearchTag('name', searchValue, 'Name')">
+                  <button class="add-btn" (click)="addSearchTag('name', searchValue, 'Name')">
+                    ✓
+                  </button>
+                </div>
+              </div>
+              
+              <div class="filter-option">
+                <label>Email</label>
+                <div class="filter-input-group">
+                  <input type="text" 
+                         [(ngModel)]="searchEmail" 
+                         placeholder="Enter email"
+                         class="filter-input"
+                         (keyup.enter)="addSearchTag('email', searchEmail, 'Email')">
+                  <button class="add-btn" (click)="addSearchTag('email', searchEmail, 'Email')">
+                    ✓
+                  </button>
+                </div>
+              </div>
+              
+              <div class="filter-option">
+                <label>City</label>
+                <div class="filter-input-group">
+                  <input type="text" 
+                         [(ngModel)]="searchCity" 
+                         placeholder="Enter city"
+                         class="filter-input"
+                         (keyup.enter)="addSearchTag('city', searchCity, 'City')">
+                  <button class="add-btn" (click)="addSearchTag('city', searchCity, 'City')">
+                    ✓
+                  </button>
+                </div>
+              </div>
+              
+              <div class="filter-option">
+                <label>Phone</label>
+                <div class="filter-input-group">
+                  <input type="text" 
+                         [(ngModel)]="searchPhone" 
+                         placeholder="Enter phone"
+                         class="filter-input"
+                         (keyup.enter)="addSearchTag('phone', searchPhone, 'Phone')">
+                  <button class="add-btn" (click)="addSearchTag('phone', searchPhone, 'Phone')">
+                    ✓
+                  </button>
+                </div>
+              </div>
+              
+              <div class="filter-option">
+                <label>Company</label>
+                <div class="filter-input-group">
+                  <input type="text" 
+                         [(ngModel)]="searchCompany" 
+                         placeholder="Enter company"
+                         class="filter-input"
+                         (keyup.enter)="addSearchTag('company', searchCompany, 'Company')">
+                  <button class="add-btn" (click)="addSearchTag('company', searchCompany, 'Company')">
+                    ✓
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button type="button" 
+                  class="reset-btn" 
+                  (click)="resetSearch()"
+                  *ngIf="searchTags.length > 0">
+            × Clear All
+          </button>
         </div>
-        <div class="filter_right_section">
+
+        <div class="action-buttons">
           <ngx-store-autocomplete (onStore)="onSelectStore($event)"></ngx-store-autocomplete>
-          <a class="createBtn" (click)="addCustomer()">
-            <img class="pointer sda" src="../../../../assets/img/plus.png" title="create_customer">
-            <label>{{ 'CUSTOMERS.CREATE_CUSTOMER' | translate}}</label>
-          </a>
+          <button class="create-btn" (click)="addCustomer()">
+            + <span>{{ 'CUSTOMERS.CREATE_CUSTOMER' | translate}}</span>
+          </button>
         </div>
+      </div>
 
-      </form>
-
-
-      <ng2-smart-table [settings]="settings" [source]="source" (custom)="onClickAction($event)" class="home-table">
+      <ng2-smart-table [settings]="settings" [source]="source" (custom)="onClickAction($event)" class="modern-table">
       </ng2-smart-table>
 
       <ngx-paginator (changePage)="changePage($event)" [pagesToShow]="5" [currentPage]="currentPage" [perPage]="perPage"

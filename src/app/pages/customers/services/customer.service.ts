@@ -19,6 +19,9 @@ export class CustomersService {
   getCustomers(params): Observable<any> {
     return this.crudService.get('/v1/private/customers', params);
   }
+  searchCustomers(params): Observable<any> {
+    return this.crudService.get('/v1/private/customers/search', params);
+  }
   getCustomerDetails(customerID): Observable<any> {
     return this.crudService.get('/v1/private/customer/' + customerID);
   }
