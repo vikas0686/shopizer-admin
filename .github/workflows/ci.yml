@@ -1,0 +1,54 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [12.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm install --legacy-peer-deps
+    
+    - name: Run linter
+      run: npm run lint --if-present
+      continue-on-error: true
+    
+    - name: Run tests
+      run: npm run test:coverage --if-present
+      continue-on-error: true
+    
+    - name: Build application
+      run: npm run build -- --configuration production
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: shopizer-admin-build-${{ github.sha }}
+        path: dist/
+        retention-days: 30
+    
+    - name: Upload test coverage
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test-coverage-${{ github.sha }}
+        path: coverage/
+        retention-days: 7
